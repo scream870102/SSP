@@ -25,6 +25,8 @@ namespace CJStudio.SSP.Player {
         }
 
         void GetInput ( ) {
+            //reset roll trigger to prevent the second time roll 
+            anim.ResetTrigger ("Roll");
             if (Player.IsAttacking) return;
             moveDir = new Vector2 (Input.GetAxis ("Horizontal"), Input.GetAxis ("Vertical"));
             float speed = moveDir.sqrMagnitude;
@@ -34,6 +36,8 @@ namespace CJStudio.SSP.Player {
             }
             else
                 anim.SetFloat ("Speed", speed);
+            if (Input.GetButtonDown ("Fire2"))
+                anim.SetTrigger ("Roll");
         }
         void MoveAndRotation ( ) {
             Vector3 forward = cam.transform.forward;

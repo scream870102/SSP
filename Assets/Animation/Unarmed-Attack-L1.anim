@@ -34013,12 +34013,12 @@ AnimationClip:
     messageOptions: 0
   - time: 0.33333334
     functionName: OnHit
-    data: Bip001_L_Finger01_end\\0.1\\10
+    data: Bip001_L_Finger01_end\\0.1\\10\\0.2
     objectReferenceParameter: {fileID: 0}
     floatParameter: 10
     intParameter: 0
     messageOptions: 0
-  - time: 0.56666666
+  - time: 0.5
     functionName: OnComboContinueS
     data: 
     objectReferenceParameter: {fileID: 0}
@@ -34032,7 +34032,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.73333335
+  - time: 0.8
     functionName: OnComboContinueE
     data: 
     objectReferenceParameter: {fileID: 0}

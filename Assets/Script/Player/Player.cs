@@ -1,25 +1,42 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Lean.Transition;
 using UnityEngine;
 namespace CJStudio.SSP.Player {
     class Player : MonoBehaviour {
         [SerializeField] float health = 100f;
+        Animator anim = null;
         Attack attack = null;
         Movement movement = null;
+        public CharacterController CharacterController { get; private set; }
         public bool IsAttacking => attack.IsAttacking;
+        public float Radius => CharacterController.radius;
         // Start is called before the first frame update
-        void Start ( ) {
+        void Awake ( ) {
+            CharacterController = GetComponent<CharacterController> ( );
+            anim = GetComponent<Animator> ( );
             attack = GetComponent<Attack> ( );
             movement = GetComponent<Movement> ( );
             if (attack) attack.Player = this;
             if (movement) movement.Player = this;
         }
 
-        public void TakeDamage (float damage, bool bLastHit = false) {
-            Debug.Log (this.name + "Get Hit");
+        public void TakeDamage (float damage, bool bLastHit = false, float distanceForKnockBack = 0f, Vector3 knockBackDirection = new Vector3 ( )) {
+            //Debug.Log (this.name + "Get Hit");
             health -= damage;
+            if (anim != null) anim.SetTrigger (bLastHit? "Revive": "Hurt");
+            if (distanceForKnockBack != 0f) {
+                anim.applyRootMotion = false;
+                Vector3 newPos = transform.position + knockBackDirection * distanceForKnockBack;
+                transform.positionTransition (newPos, .1f);
+            }
             if (bLastHit)
                 Debug.Log ("最後一擊");
+        }
+        void OnHurted ( ) {
+            anim.applyRootMotion = true;
+            Debug.Log ("痛痛痛");
+
         }
     }
 }
