@@ -15,11 +15,6 @@ namespace CJStudio.SSP.Player {
             anim = GetComponent<Animator> ( );
         }
 
-        void Start ( ) {
-
-        }
-
-        // Update is called once per frame
         void Update ( ) {
             GetInput ( );
         }
@@ -50,7 +45,6 @@ namespace CJStudio.SSP.Player {
 
             transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.LookRotation (move), attr.RotationSpeed);
             controller.Move (move * Time.deltaTime * attr.Velocity);
-
         }
     }
 
