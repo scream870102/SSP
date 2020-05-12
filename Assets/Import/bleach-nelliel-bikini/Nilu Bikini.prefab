@@ -1817,11 +1817,11 @@ GameObject:
   m_Component:
   - component: {fileID: 7373599963188793100}
   - component: {fileID: 639029392813007478}
-  - component: {fileID: 363009627043424648}
-  - component: {fileID: 855652112}
-  - component: {fileID: 855652119}
-  - component: {fileID: 855652116}
   - component: {fileID: 855652117}
+  - component: {fileID: 855652112}
+  - component: {fileID: 855652116}
+  - component: {fileID: 855652119}
+  - component: {fileID: 363009627043424648}
   m_Layer: 8
   m_Name: Nilu Bikini
   m_TagString: Player
@@ -1864,24 +1864,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!143 &363009627043424648
-CharacterController:
+--- !u!114 &855652117
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5768851369853549855}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Height: 1.9
-  m_Radius: 0.4
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1.01, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9faa23aa79c7e1e488a54969499d1080, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
+  PlayerName: Nilu
 --- !u!114 &855652112
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1900,20 +1896,6 @@ MonoBehaviour:
     DampForRotation: 0.3
     RotationSpeed: 0.1
   cam: {fileID: 0}
---- !u!136 &855652119
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5768851369853549855}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.6
-  m_Height: 1.9
-  m_Direction: 1
-  m_Center: {x: 0, y: 1.01, z: 0}
 --- !u!114 &855652116
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1929,19 +1911,38 @@ MonoBehaviour:
   additionalRadius: 0.1
   target: {fileID: 0}
   targetPlayer: {fileID: 0}
---- !u!114 &855652117
-MonoBehaviour:
+--- !u!136 &855652119
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5768851369853549855}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9faa23aa79c7e1e488a54969499d1080, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 100
+  m_Radius: 0.6
+  m_Height: 1.9
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.01, z: 0}
+--- !u!143 &363009627043424648
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5768851369853549855}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 1.9
+  m_Radius: 0.4
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 1.01, z: 0}
 --- !u!1 &5846504433046016789
 GameObject:
   m_ObjectHideFlags: 0

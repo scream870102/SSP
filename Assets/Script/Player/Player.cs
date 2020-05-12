@@ -1,18 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using CJStudio.SSP.InputSystem;
 using Lean.Transition;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Users;
 namespace CJStudio.SSP.Player {
     class Player : MonoBehaviour {
         [SerializeField] float health = 100f;
+        public string PlayerName = "";
         Animator anim = null;
         Attack attack = null;
         Movement movement = null;
         public CharacterController CharacterController { get; private set; }
         public bool IsAttacking => attack.IsAttacking;
         public float Radius => CharacterController.radius;
+        public InputUser InputUser { get; set; }
+        public PlayerControl PlayerControl { get; private set; }
         // Start is called before the first frame update
         void Awake ( ) {
+            PlayerControl = new PlayerControl ( );
+            PlayerControl.Enable ( );
             CharacterController = GetComponent<CharacterController> ( );
             anim = GetComponent<Animator> ( );
             attack = GetComponent<Attack> ( );

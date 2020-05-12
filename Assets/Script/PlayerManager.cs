@@ -1,38 +1,38 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using CJStudio.SSP.Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Users;
-public class PlayerManager : MonoBehaviour {
-    //[SerializeField] CJStudio.SSP.InputSystem.Player playerInput;
-    // Start is called before the first frame update
-    void Start ( ) {
-        // Debug.Log (PlayerInputManager.instance.isActiveAndEnabled);
-        // PlayerInputManager.instance.onPlayerJoined += OnPlayerJoined;
-        // PlayerInputManager.instance.onPlayerLeft += OnPlayerLeft;
-        ++InputUser.listenForUnpairedDeviceActivity;
-        InputUser.onUnpairedDeviceUsed += (c, e) => {
-            //if(c.device.)
-         };
-        //playerInput = new CJStudio.SSP.InputSystem.Player ( );
-        // foreach (var item in playerInput.devices) {
-        //     Debug.Log (item.name);
-        // }
-    }
+using P=CJStudio.SSP.Player;
+namespace CJStudio.SSP {
+    class PlayerManager : MonoBehaviour {
+        [SerializeField] P.Player player1 = null;
+        [SerializeField] P.Player player2 = null;
+        void OnEnable ( ) {
+            InputUser.onUnpairedDeviceUsed += OnUnpairedDeviceUsed;
+        }
 
-    void Update ( ) {
-        // if (Input.GetKeyDown (KeyCode.K)) {
-        //     Debug.Log (playerInput.devices.HasValue);
-        // }
-    }
-    void OnPlayerJoined (PlayerInput i) {
-        //Debug.Log (i.playerIndex);
-        //Debug.Log (PlayerInputManager.instance.playerCount);
-        //Debug.Log (i.devices[0].name);
-    }
+        void OnDisable ( ) {
+            InputUser.onUnpairedDeviceUsed -= OnUnpairedDeviceUsed;
+        }
 
-    void OnPlayerLeft (PlayerInput i) {
-        Debug.Log ("Left");
-        Debug.Log (PlayerInputManager.instance.playerCount);
+        void Awake ( ) {
+            ++InputUser.listenForUnpairedDeviceActivity;
+        }
+
+        void OnUnpairedDeviceUsed (InputControl c, InputEventPtr e) {
+            if (!(c.device.GetType ( ) == Keyboard.current.GetType ( ) || c.device.GetType ( ) == Gamepad.current.GetType ( )))
+                return;
+            if (!player1.InputUser.valid) {
+                player1.InputUser = InputUser.PerformPairingWithDevice (c.device);
+                player1.InputUser.AssociateActionsWithUser (player1.PlayerControl);
+                Debug.Log ("Pairing player1 with " + c.device.name);
+            }
+            else if (!player2.InputUser.valid) {
+                player2.InputUser = InputUser.PerformPairingWithDevice (c.device);
+                player2.InputUser.AssociateActionsWithUser (player2.PlayerControl);
+                Debug.Log ("Pairing player2 with " + c.device.name);
+            }
+        }
     }
 }

@@ -1,12 +1,12 @@
 {
-    "name": "Player",
+    "name": "PlayerControl",
     "maps": [
         {
             "name": "GamePlay",
             "id": "5f2f28b0-2bc6-4052-b695-8964bedf2372",
             "actions": [
                 {
-                    "name": "Test",
+                    "name": "Move",
                     "type": "Value",
                     "id": "d82eeb74-8dfa-470f-9477-132ab84963ef",
                     "expectedControlType": "Vector2",
@@ -14,9 +14,17 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Join",
+                    "name": "Attack",
                     "type": "Button",
-                    "id": "0f72ae4a-8dd4-42bf-b6f1-6ec7985e0064",
+                    "id": "baf3dba4-6004-4853-97c4-18a50181c60a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Roll",
+                    "type": "Button",
+                    "id": "1e253949-372e-4fb3-a2b0-cf7ac0dd7732",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -30,7 +38,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Test",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -41,7 +49,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Test",
+                    "action": "Move",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -52,7 +60,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Test",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -63,7 +71,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Test",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -74,7 +82,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Test",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -85,29 +93,51 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Test",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
                     "name": "",
-                    "id": "3dd67808-7c8e-4315-ae8a-ed7708b91d4d",
-                    "path": "<Gamepad>/buttonEast",
+                    "id": "6c851117-3100-4414-8cbe-168c8f764675",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Join",
+                    "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "aec81c43-a666-4b37-9525-d2ff6e0d358d",
-                    "path": "<Keyboard>/space",
+                    "id": "136c08fe-2c2f-4ebe-884d-f7109c9f9a2b",
+                    "path": "<Keyboard>/j",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Join",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "13d0d1eb-0a82-42c2-8f12-03716740e209",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Roll",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a896159b-2091-43f8-adbf-28e2c8ce2c31",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Roll",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

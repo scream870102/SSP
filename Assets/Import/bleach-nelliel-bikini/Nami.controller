@@ -21,7 +21,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 5f2e0facf69e3384f8034e7ef8d9b8a0, type: 2}
+  m_Motion: {fileID: 7400000, guid: 4ba6868d51230814fa5f020cd24c498f, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -333,7 +333,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 66954716af4aede418d7685d00927246, type: 2}
+  m_Motion: {fileID: 7400000, guid: 8ff4bb2a30017f446a4277ea8f9fc8f6, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -605,7 +605,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Nilu
+  m_Name: Nami
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Speed
@@ -896,25 +896,25 @@ AnimatorStateMachine:
     m_Position: {x: 260, y: 90, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8480048689754750840}
-    m_Position: {x: 800, y: 90, z: 0}
+    m_Position: {x: 850, y: 90, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2843316183294619143}
     m_Position: {x: 840, y: 160, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -4080140063398597457}
-    m_Position: {x: 560, y: 10, z: 0}
+    m_Position: {x: 560, y: 0, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7241280111203745477}
-    m_Position: {x: 1040, y: 20, z: 0}
+    m_Position: {x: 1060, y: -10, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3522217559821203220}
     m_Position: {x: 570, y: 160, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5817038977216157334}
-    m_Position: {x: 800, y: 20, z: 0}
+    m_Position: {x: 800, y: 0, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8374111733889176369}
-    m_Position: {x: 570, y: 90, z: 0}
+    m_Position: {x: 590, y: 90, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -805169094499028325}
     m_Position: {x: 20, y: -40, z: 0}

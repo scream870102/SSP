@@ -1,4 +1,4 @@
-// GENERATED AUTOMATICALLY FROM 'Assets/Other/Player.inputactions'
+// GENERATED AUTOMATICALLY FROM 'Assets/Other/PlayerControl.inputactions'
 
 using System;
 using System.Collections;
@@ -8,20 +8,20 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace CJStudio.SSP.InputSystem
 {
-    public class @Player : IInputActionCollection, IDisposable
+    public class @PlayerControl : IInputActionCollection, IDisposable
     {
         public InputActionAsset asset { get; }
-        public @Player()
+        public @PlayerControl()
         {
             asset = InputActionAsset.FromJson(@"{
-    ""name"": ""Player"",
+    ""name"": ""PlayerControl"",
     ""maps"": [
         {
             ""name"": ""GamePlay"",
             ""id"": ""5f2f28b0-2bc6-4052-b695-8964bedf2372"",
             ""actions"": [
                 {
-                    ""name"": ""Test"",
+                    ""name"": ""Move"",
                     ""type"": ""Value"",
                     ""id"": ""d82eeb74-8dfa-470f-9477-132ab84963ef"",
                     ""expectedControlType"": ""Vector2"",
@@ -29,9 +29,17 @@ namespace CJStudio.SSP.InputSystem
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Join"",
+                    ""name"": ""Attack"",
                     ""type"": ""Button"",
-                    ""id"": ""0f72ae4a-8dd4-42bf-b6f1-6ec7985e0064"",
+                    ""id"": ""baf3dba4-6004-4853-97c4-18a50181c60a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Roll"",
+                    ""type"": ""Button"",
+                    ""id"": ""1e253949-372e-4fb3-a2b0-cf7ac0dd7732"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -45,7 +53,7 @@ namespace CJStudio.SSP.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Test"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -56,7 +64,7 @@ namespace CJStudio.SSP.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Test"",
+                    ""action"": ""Move"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -67,7 +75,7 @@ namespace CJStudio.SSP.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Test"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -78,7 +86,7 @@ namespace CJStudio.SSP.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Test"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -89,7 +97,7 @@ namespace CJStudio.SSP.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Test"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -100,29 +108,51 @@ namespace CJStudio.SSP.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Test"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",
-                    ""id"": ""3dd67808-7c8e-4315-ae8a-ed7708b91d4d"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""id"": ""6c851117-3100-4414-8cbe-168c8f764675"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Join"",
+                    ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""aec81c43-a666-4b37-9525-d2ff6e0d358d"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""id"": ""136c08fe-2c2f-4ebe-884d-f7109c9f9a2b"",
+                    ""path"": ""<Keyboard>/j"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Join"",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""13d0d1eb-0a82-42c2-8f12-03716740e209"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Roll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a896159b-2091-43f8-adbf-28e2c8ce2c31"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Roll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -133,8 +163,9 @@ namespace CJStudio.SSP.InputSystem
 }");
             // GamePlay
             m_GamePlay = asset.FindActionMap("GamePlay", throwIfNotFound: true);
-            m_GamePlay_Test = m_GamePlay.FindAction("Test", throwIfNotFound: true);
-            m_GamePlay_Join = m_GamePlay.FindAction("Join", throwIfNotFound: true);
+            m_GamePlay_Move = m_GamePlay.FindAction("Move", throwIfNotFound: true);
+            m_GamePlay_Attack = m_GamePlay.FindAction("Attack", throwIfNotFound: true);
+            m_GamePlay_Roll = m_GamePlay.FindAction("Roll", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -184,14 +215,16 @@ namespace CJStudio.SSP.InputSystem
         // GamePlay
         private readonly InputActionMap m_GamePlay;
         private IGamePlayActions m_GamePlayActionsCallbackInterface;
-        private readonly InputAction m_GamePlay_Test;
-        private readonly InputAction m_GamePlay_Join;
+        private readonly InputAction m_GamePlay_Move;
+        private readonly InputAction m_GamePlay_Attack;
+        private readonly InputAction m_GamePlay_Roll;
         public struct GamePlayActions
         {
-            private @Player m_Wrapper;
-            public GamePlayActions(@Player wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Test => m_Wrapper.m_GamePlay_Test;
-            public InputAction @Join => m_Wrapper.m_GamePlay_Join;
+            private @PlayerControl m_Wrapper;
+            public GamePlayActions(@PlayerControl wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Move => m_Wrapper.m_GamePlay_Move;
+            public InputAction @Attack => m_Wrapper.m_GamePlay_Attack;
+            public InputAction @Roll => m_Wrapper.m_GamePlay_Roll;
             public InputActionMap Get() { return m_Wrapper.m_GamePlay; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -201,30 +234,37 @@ namespace CJStudio.SSP.InputSystem
             {
                 if (m_Wrapper.m_GamePlayActionsCallbackInterface != null)
                 {
-                    @Test.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnTest;
-                    @Test.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnTest;
-                    @Test.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnTest;
-                    @Join.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnJoin;
-                    @Join.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnJoin;
-                    @Join.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnJoin;
+                    @Move.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnMove;
+                    @Move.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnMove;
+                    @Move.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnMove;
+                    @Attack.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnAttack;
+                    @Attack.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnAttack;
+                    @Attack.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnAttack;
+                    @Roll.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnRoll;
+                    @Roll.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnRoll;
+                    @Roll.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnRoll;
                 }
                 m_Wrapper.m_GamePlayActionsCallbackInterface = instance;
                 if (instance != null)
                 {
-                    @Test.started += instance.OnTest;
-                    @Test.performed += instance.OnTest;
-                    @Test.canceled += instance.OnTest;
-                    @Join.started += instance.OnJoin;
-                    @Join.performed += instance.OnJoin;
-                    @Join.canceled += instance.OnJoin;
+                    @Move.started += instance.OnMove;
+                    @Move.performed += instance.OnMove;
+                    @Move.canceled += instance.OnMove;
+                    @Attack.started += instance.OnAttack;
+                    @Attack.performed += instance.OnAttack;
+                    @Attack.canceled += instance.OnAttack;
+                    @Roll.started += instance.OnRoll;
+                    @Roll.performed += instance.OnRoll;
+                    @Roll.canceled += instance.OnRoll;
                 }
             }
         }
         public GamePlayActions @GamePlay => new GamePlayActions(this);
         public interface IGamePlayActions
         {
-            void OnTest(InputAction.CallbackContext context);
-            void OnJoin(InputAction.CallbackContext context);
+            void OnMove(InputAction.CallbackContext context);
+            void OnAttack(InputAction.CallbackContext context);
+            void OnRoll(InputAction.CallbackContext context);
         }
     }
 }

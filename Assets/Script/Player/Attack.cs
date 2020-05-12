@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.InputSystem;
 namespace CJStudio.SSP.Player {
     // HA = Hit area -- 在這個範圍內可以插入多個攻擊點 但只會計算一次傷害
     // CC = Combo Continue -- 在這個時間點內可以持續接受玩家的輸入 來延續技能
@@ -17,11 +18,13 @@ namespace CJStudio.SSP.Player {
         bool bDetect = false;
         bool bHit = false;
         bool bApproaching = false;
+        bool bAttackPressed = false;
         float approachVel = 0f;
         float playerRadius = 0f;
         [SerializeField] float additionalRadius = 0f;
         [SerializeField] Transform target = null;
         [SerializeField] Player targetPlayer = null;
+        [SerializeField] ComboInfo comboInfo = null;
         public bool IsAttacking { get; private set; }
 #if UNITY_EDITOR
         Vector3 pos = Vector3.zero;
@@ -32,7 +35,8 @@ namespace CJStudio.SSP.Player {
             anim = GetComponent<Animator> ( );
             Transform[ ] obj = GetComponentsInChildren<Transform> ( );
             foreach (Transform o in obj) {
-                bones.Add (o.name, o);
+                if (!bones.ContainsKey (o.name))
+                    bones.Add (o.name, o);
             }
         }
         void Start ( ) {
@@ -41,11 +45,23 @@ namespace CJStudio.SSP.Player {
         }
 
         void Update ( ) {
-            if (Input.GetButtonDown ("Fire1")) {
-                anim.SetInteger ("Combo", 3);
+            if (bAttackPressed) {
+                anim.SetInteger ("Combo", comboInfo.Normal);
             }
             GetHit ( );
             Approach ( );
+        }
+
+        void OnAttackStarted (InputAction.CallbackContext ctx) {
+            bAttackPressed = true;
+        }
+
+        void OnAttackPerformed (InputAction.CallbackContext ctx) {
+            bAttackPressed = true;
+        }
+
+        void OnAttackCanceled (InputAction.CallbackContext ctx) {
+            bAttackPressed = false;
         }
 
         void OnHurt ( ) {
@@ -91,7 +107,7 @@ namespace CJStudio.SSP.Player {
 
         void GetHit ( ) {
             if (bDetect) {
-                if (Input.GetButtonDown ("Fire1")) {
+                if (bAttackPressed) {
                     bContinue = true;
                     anim.SetBool ("Continue", bContinue);
                 }
@@ -179,6 +195,18 @@ namespace CJStudio.SSP.Player {
                 Gizmos.DrawSphere (pos, radius);
         }
 #endif
+        void OnEnable ( ) {
+            Player.PlayerControl.GamePlay.Attack.started += OnAttackStarted;
+            Player.PlayerControl.GamePlay.Attack.performed += OnAttackPerformed;
+            Player.PlayerControl.GamePlay.Attack.canceled += OnAttackCanceled;
+        }
+
+        void OnDisable ( ) {
+            Player.PlayerControl.GamePlay.Attack.started -= OnAttackStarted;
+            Player.PlayerControl.GamePlay.Attack.performed -= OnAttackPerformed;
+            Player.PlayerControl.GamePlay.Attack.canceled -= OnAttackCanceled;
+        }
+
         class AttackInfo {
             public AttackInfo (string boneName, float radius, float damage, float knockBackDis) {
                 this.boneName = boneName;
@@ -190,6 +218,13 @@ namespace CJStudio.SSP.Player {
             public float radius = 0f;
             public float damage = 0f;
             public float knockBackDis = 0f;
+        }
+
+        [System.Serializable]
+        class ComboInfo {
+            public int Normal;
+            public int Special;
+            public int Ultilimate;
         }
     }
 

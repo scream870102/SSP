@@ -34018,7 +34018,7 @@ AnimationClip:
     floatParameter: 10
     intParameter: 0
     messageOptions: 0
-  - time: 0.5
+  - time: 0.43333334
     functionName: OnComboContinueS
     data: 
     objectReferenceParameter: {fileID: 0}
