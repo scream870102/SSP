@@ -37,7 +37,23 @@ namespace CJStudio.SSP.InputSystem
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Roll"",
+                    ""name"": ""MoveHori"",
+                    ""type"": ""Value"",
+                    ""id"": ""020e3ed4-6097-4209-82dd-2b16c787973e"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""e3691ebe-7625-4e48-a0fb-b6692cfb4600"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Guard"",
                     ""type"": ""Button"",
                     ""id"": ""1e253949-372e-4fb3-a2b0-cf7ac0dd7732"",
                     ""expectedControlType"": ""Button"",
@@ -136,12 +152,78 @@ namespace CJStudio.SSP.InputSystem
                 },
                 {
                     ""name"": """",
-                    ""id"": ""13d0d1eb-0a82-42c2-8f12-03716740e209"",
+                    ""id"": ""b184d4a5-f229-4e67-bc5d-4c65dbb56bfa"",
+                    ""path"": ""<Gamepad>/leftStick/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveHori"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""29f8b126-4e27-4fef-b0c8-1160f8e047ad"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveHori"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""97a4f9f9-28a5-4250-b052-bc94d0a90d1b"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveHori"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""e481d66c-0f18-47b7-9a97-4678f393b6ab"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveHori"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3c99b4ec-be73-492e-bd43-b754c3939c18"",
                     ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Roll"",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b768f2da-5566-4651-b774-7b8856ed49ae"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""13d0d1eb-0a82-42c2-8f12-03716740e209"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Guard"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -152,7 +234,7 @@ namespace CJStudio.SSP.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Roll"",
+                    ""action"": ""Guard"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -165,7 +247,9 @@ namespace CJStudio.SSP.InputSystem
             m_GamePlay = asset.FindActionMap("GamePlay", throwIfNotFound: true);
             m_GamePlay_Move = m_GamePlay.FindAction("Move", throwIfNotFound: true);
             m_GamePlay_Attack = m_GamePlay.FindAction("Attack", throwIfNotFound: true);
-            m_GamePlay_Roll = m_GamePlay.FindAction("Roll", throwIfNotFound: true);
+            m_GamePlay_MoveHori = m_GamePlay.FindAction("MoveHori", throwIfNotFound: true);
+            m_GamePlay_Jump = m_GamePlay.FindAction("Jump", throwIfNotFound: true);
+            m_GamePlay_Guard = m_GamePlay.FindAction("Guard", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -217,14 +301,18 @@ namespace CJStudio.SSP.InputSystem
         private IGamePlayActions m_GamePlayActionsCallbackInterface;
         private readonly InputAction m_GamePlay_Move;
         private readonly InputAction m_GamePlay_Attack;
-        private readonly InputAction m_GamePlay_Roll;
+        private readonly InputAction m_GamePlay_MoveHori;
+        private readonly InputAction m_GamePlay_Jump;
+        private readonly InputAction m_GamePlay_Guard;
         public struct GamePlayActions
         {
             private @PlayerControl m_Wrapper;
             public GamePlayActions(@PlayerControl wrapper) { m_Wrapper = wrapper; }
             public InputAction @Move => m_Wrapper.m_GamePlay_Move;
             public InputAction @Attack => m_Wrapper.m_GamePlay_Attack;
-            public InputAction @Roll => m_Wrapper.m_GamePlay_Roll;
+            public InputAction @MoveHori => m_Wrapper.m_GamePlay_MoveHori;
+            public InputAction @Jump => m_Wrapper.m_GamePlay_Jump;
+            public InputAction @Guard => m_Wrapper.m_GamePlay_Guard;
             public InputActionMap Get() { return m_Wrapper.m_GamePlay; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -240,9 +328,15 @@ namespace CJStudio.SSP.InputSystem
                     @Attack.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnAttack;
                     @Attack.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnAttack;
                     @Attack.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnAttack;
-                    @Roll.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnRoll;
-                    @Roll.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnRoll;
-                    @Roll.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnRoll;
+                    @MoveHori.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnMoveHori;
+                    @MoveHori.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnMoveHori;
+                    @MoveHori.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnMoveHori;
+                    @Jump.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnJump;
+                    @Jump.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnJump;
+                    @Jump.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnJump;
+                    @Guard.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnGuard;
+                    @Guard.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnGuard;
+                    @Guard.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnGuard;
                 }
                 m_Wrapper.m_GamePlayActionsCallbackInterface = instance;
                 if (instance != null)
@@ -253,9 +347,15 @@ namespace CJStudio.SSP.InputSystem
                     @Attack.started += instance.OnAttack;
                     @Attack.performed += instance.OnAttack;
                     @Attack.canceled += instance.OnAttack;
-                    @Roll.started += instance.OnRoll;
-                    @Roll.performed += instance.OnRoll;
-                    @Roll.canceled += instance.OnRoll;
+                    @MoveHori.started += instance.OnMoveHori;
+                    @MoveHori.performed += instance.OnMoveHori;
+                    @MoveHori.canceled += instance.OnMoveHori;
+                    @Jump.started += instance.OnJump;
+                    @Jump.performed += instance.OnJump;
+                    @Jump.canceled += instance.OnJump;
+                    @Guard.started += instance.OnGuard;
+                    @Guard.performed += instance.OnGuard;
+                    @Guard.canceled += instance.OnGuard;
                 }
             }
         }
@@ -264,7 +364,9 @@ namespace CJStudio.SSP.InputSystem
         {
             void OnMove(InputAction.CallbackContext context);
             void OnAttack(InputAction.CallbackContext context);
-            void OnRoll(InputAction.CallbackContext context);
+            void OnMoveHori(InputAction.CallbackContext context);
+            void OnJump(InputAction.CallbackContext context);
+            void OnGuard(InputAction.CallbackContext context);
         }
     }
 }

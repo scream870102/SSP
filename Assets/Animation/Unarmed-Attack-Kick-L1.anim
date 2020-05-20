@@ -53061,20 +53061,6 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 1
   m_Events:
-  - time: 0
-    functionName: OnApproachAreaS
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 20
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.16666667
-    functionName: OnApproachAreaE
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
   - time: 0.2
     functionName: OnHitAreaS
     data: 
@@ -53084,7 +53070,7 @@ AnimationClip:
     messageOptions: 0
   - time: 0.5
     functionName: OnLastHit
-    data: leg_left_ankle\\0.3\\20\\3.0
+    data: Leg_Left_TOE2\\0.3\\20\\3.0
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using CJStudio.SSP.InputSystem;
+using Eccentric.Utils;
 using Lean.Transition;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Users;
 namespace CJStudio.SSP.Player {
     class Player : MonoBehaviour {
@@ -14,9 +13,19 @@ namespace CJStudio.SSP.Player {
         Movement movement = null;
         public CharacterController CharacterController { get; private set; }
         public bool IsAttacking => attack.IsAttacking;
-        public float Radius => CharacterController.radius;
         public InputUser InputUser { get; set; }
         public PlayerControl PlayerControl { get; private set; }
+        public bool IsHurted { get; private set; }
+#region HURT
+        public event Action HurtStart;
+        public event Action HurtEnd;
+#endregion
+#region TRANSITION
+        bool bMoving = false;
+        ScaledTimer timer = new ScaledTimer ( );
+        float velocity = 0f;
+        Vector3 direction = Vector3.zero;
+#endregion
         // Start is called before the first frame update
         void Awake ( ) {
             PlayerControl = new PlayerControl ( );
@@ -29,22 +38,56 @@ namespace CJStudio.SSP.Player {
             if (movement) movement.Player = this;
         }
 
+        void Update ( ) {
+            ControllerMoving ( );
+        }
+
+        void ControllerMoving ( ) {
+            if (bMoving) {
+                if (timer.IsFinished) {
+                    bMoving = false;
+                    return;
+                }
+                CharacterController.Move (direction * velocity * Time.deltaTime);
+            }
+        }
+
         public void TakeDamage (float damage, bool bLastHit = false, float distanceForKnockBack = 0f, Vector3 knockBackDirection = new Vector3 ( )) {
-            //Debug.Log (this.name + "Get Hit");
+            if (movement.IsGuard) {
+                movement.MinusGuardEnergy (damage);
+                return;
+            }
             health -= damage;
             if (anim != null) anim.SetTrigger (bLastHit? "Revive": "Hurt");
             if (distanceForKnockBack != 0f) {
                 anim.applyRootMotion = false;
                 Vector3 newPos = transform.position + knockBackDirection * distanceForKnockBack;
-                transform.positionTransition (newPos, .1f);
+                ControllerMove (newPos, .1f);
             }
             if (bLastHit)
                 Debug.Log ("最後一擊");
         }
-        void OnHurted ( ) {
-            anim.applyRootMotion = true;
-            Debug.Log ("痛痛痛");
 
+        void OnControllerColliderHit (ControllerColliderHit hit) {
+            if (hit.collider.tag == "Wall")
+                bMoving = false;
+        }
+
+        void ControllerMove (Vector3 targetPosition, float duration) {
+            velocity = (targetPosition - transform.position).sqrMagnitude / duration;
+            direction = (targetPosition - transform.position).normalized;
+            timer.Reset (duration);
+            bMoving = true;
+        }
+
+        void OnHurtStart ( ) {
+            if (HurtStart != null)
+                HurtStart ( );
+        }
+
+        void OnHurtEnd ( ) {
+            if (HurtEnd != null)
+                HurtEnd ( );
         }
     }
 }

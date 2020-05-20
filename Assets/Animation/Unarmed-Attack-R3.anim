@@ -33279,20 +33279,6 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 1
   m_Events:
-  - time: 0
-    functionName: OnApproachAreaS
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 20
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.13333334
-    functionName: OnApproachAreaE
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
   - time: 0.16666667
     functionName: OnHitAreaS
     data: 
@@ -33302,7 +33288,7 @@ AnimationClip:
     messageOptions: 0
   - time: 0.33333334
     functionName: OnHit
-    data: arm_right_finger_2c\\0.1\\10\\0.2
+    data: Arm_Right_Hand_F_FORE_01\\0.1\\10\\0.2
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

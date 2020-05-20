@@ -22,7 +22,23 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Roll",
+                    "name": "MoveHori",
+                    "type": "Value",
+                    "id": "020e3ed4-6097-4209-82dd-2b16c787973e",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "e3691ebe-7625-4e48-a0fb-b6692cfb4600",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Guard",
                     "type": "Button",
                     "id": "1e253949-372e-4fb3-a2b0-cf7ac0dd7732",
                     "expectedControlType": "Button",
@@ -121,12 +137,78 @@
                 },
                 {
                     "name": "",
-                    "id": "13d0d1eb-0a82-42c2-8f12-03716740e209",
+                    "id": "b184d4a5-f229-4e67-bc5d-4c65dbb56bfa",
+                    "path": "<Gamepad>/leftStick/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveHori",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "29f8b126-4e27-4fef-b0c8-1160f8e047ad",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveHori",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "97a4f9f9-28a5-4250-b052-bc94d0a90d1b",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveHori",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "e481d66c-0f18-47b7-9a97-4678f393b6ab",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveHori",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "3c99b4ec-be73-492e-bd43-b754c3939c18",
                     "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Roll",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b768f2da-5566-4651-b774-7b8856ed49ae",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "13d0d1eb-0a82-42c2-8f12-03716740e209",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Guard",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -137,7 +219,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Roll",
+                    "action": "Guard",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
