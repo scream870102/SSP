@@ -11,26 +11,25 @@ namespace CJStudio.SSP.Player {
     // E=End
     // 詳情參考Player.md
     class Attack : MonoBehaviour {
-        public Player Player { get; set; }
-        Animator anim = null;
+        [SerializeField] ComboInfo comboInfo = null;
         Dictionary<string, Transform> bones = new Dictionary<string, Transform> ( );
+        Animator anim = null;
+        public Player Player { get; set; }
+        public Player TargetPlayer { get; set; }
+        public bool IsAttacking { get; private set; }
         bool bContinue = false;
         bool bDetect = false;
         bool bHit = false;
-        //bool bApproaching = false;
         bool bAttackPressed = false;
-        //float approachVel = 0f;
-        float playerRadius = 0f;
-        //[SerializeField] float additionalRadius = 0f;
-        //[SerializeField] Transform target = null;
-        [SerializeField] Player targetPlayer = null;
-        [SerializeField] ComboInfo comboInfo = null;
-        public bool IsAttacking { get; private set; }
+#region DEBUG
 #if UNITY_EDITOR
         Vector3 pos = Vector3.zero;
         float radius = 0f;
         bool bDraw = false;
 #endif
+#endregion
+
+#region MONO_MESSAGE
         void Awake ( ) {
             anim = GetComponent<Animator> ( );
             Transform[ ] obj = GetComponentsInChildren<Transform> ( );
@@ -38,11 +37,11 @@ namespace CJStudio.SSP.Player {
                 if (!bones.ContainsKey (o.name))
                     bones.Add (o.name, o);
             }
+            Player.HurtStart += OnHurtStarted;
         }
+
         void Start ( ) {
             IsAttacking = false;
-            playerRadius = Player.CharacterController.radius;
-            Player.HurtStart += OnHurtStarted;
         }
 
         void Update ( ) {
@@ -50,8 +49,12 @@ namespace CJStudio.SSP.Player {
                 anim.SetInteger ("Combo", comboInfo.Normal);
             }
             DetectBtn4ComboExtend ( );
-            //Approach ( );
         }
+
+        void OnDestroy ( ) {
+            Player.HurtStart -= OnHurtStarted;
+        }
+#endregion
 
         void DetectBtn4ComboExtend ( ) {
             if (bDetect) {
@@ -63,62 +66,34 @@ namespace CJStudio.SSP.Player {
         }
 
         void CheckIfHitTarget (string hitInfo, bool bLastHit = false) {
-            string pattern = @"(\w+)\\+(\d+\.?\d+)\\+(\d+\.?\d+)\\+(\d+\.?\d+)";
+            string pattern = @"(\w+)\\+(\d+\.?\d+)\\+(\d+\.?\d+)\\+(\d+\.?\d+)\\+(\d+\.?\d+)\\+(\d+)";
             MatchCollection matches = Regex.Matches (hitInfo, pattern);
             AttackInfo info = new AttackInfo (
                 matches[0].Groups[1].Value,
                 float.Parse (matches[0].Groups[2].Value),
                 float.Parse (matches[0].Groups[3].Value),
-                float.Parse (matches[0].Groups[4].Value)
+                float.Parse (matches[0].Groups[4].Value),
+                float.Parse (matches[0].Groups[5].Value),
+                (EKnockBackDirection) (int.Parse (matches[0].Groups[6].Value))
             );
 #if UNITY_EDITOR
             bDraw = true;
-            pos = bones[info.boneName].position;
-            radius = info.radius;
+            pos = bones[info.BoneName].position;
+            radius = info.Radius;
 #endif
-            Collider[ ] cols = Physics.OverlapSphere (bones[info.boneName].position, info.radius);
+            Collider[ ] cols = Physics.OverlapSphere (bones[info.BoneName].position, info.Radius);
             if (cols.Length != 0) {
                 foreach (Collider c in cols) {
                     if (c.name != this.name && c.tag == "Player") {
-                        if (targetPlayer) {
+                        if (TargetPlayer) {
                             bHit = true;
-                            targetPlayer.TakeDamage (info.damage, bLastHit, info.knockBackDis, transform.forward);
+                            TargetPlayer.TakeDamage (info.Damage, bLastHit, info.KnockBackDis, info.KnockBackDur, info.Direction);
                         }
                     }
                 }
             }
         }
 
-        // void Approach ( ) {
-        //     if (!bApproaching || target == null) return;
-        //     //keep approaching target and also set rotation to face target
-        //     Vector3 direction = (target.position - transform.position).normalized;
-        //     direction.y = 0f;
-        //     Quaternion rotation = Quaternion.LookRotation (direction, Vector3.up);
-        //     transform.rotation = rotation;
-        //     //if player bomb into something stop approaching
-        //     RaycastHit[ ] hit;
-        //     hit = Physics.RaycastAll (transform.position, transform.forward, playerRadius);
-        //     Debug.DrawLine (transform.position, transform.position + transform.forward * playerRadius, Color.green, 1f);
-        //     if (hit.Length != 0) {
-        //         foreach (var o in hit) {
-        //             //Debug.Log (o.collider.name);
-        //         }
-        //         return;
-        //     }
-        //     //Direct calculate distance between player and target if they are in small distance just stop approaching
-        //     //This is to solve that if player is already in target hurtbox then it can't detect that
-        //     Vector3 disBetween = transform.position - target.position;
-        //     disBetween.y = 0f;
-        //     if (disBetween.sqrMagnitude < Mathf.Pow (playerRadius + targetPlayer.Radius + additionalRadius, 2)) {
-        //         //Debug.Log ("太近了 變態~~~");
-        //         return;
-        //     }
-
-        //     Vector3 newPos = transform.position + direction * approachVel * Time.deltaTime;
-        //     transform.position = newPos;
-
-        // }
 #region BUTTON_CAllBACK
         void OnAttackStarted (InputAction.CallbackContext ctx) {
             bAttackPressed = true;
@@ -131,18 +106,21 @@ namespace CJStudio.SSP.Player {
         void OnAttackCanceled (InputAction.CallbackContext ctx) {
             bAttackPressed = false;
         }
+
+        void OnEnable ( ) {
+            Player.PlayerControl.GamePlay.Attack.started += OnAttackStarted;
+            Player.PlayerControl.GamePlay.Attack.performed += OnAttackPerformed;
+            Player.PlayerControl.GamePlay.Attack.canceled += OnAttackCanceled;
+        }
+
+        void OnDisable ( ) {
+            Player.PlayerControl.GamePlay.Attack.started -= OnAttackStarted;
+            Player.PlayerControl.GamePlay.Attack.performed -= OnAttackPerformed;
+            Player.PlayerControl.GamePlay.Attack.canceled -= OnAttackCanceled;
+        }
 #endregion
 
 #region ANIMATION_EVENT_CALLBACK
-        // void OnApproachAreaS (float velocity) {
-        //     //bApproaching = true;
-        //     //approachVel = velocity;
-        //     anim.applyRootMotion = false;
-        // }
-        // void OnApproachAreaE ( ) {
-        //     //bApproaching = false;
-        //     anim.applyRootMotion = true;
-        // }
 
         //Call this method to stop accept player input for extend combo
         void OnHurtStarted ( ) {
@@ -202,20 +180,6 @@ namespace CJStudio.SSP.Player {
 
 #endregion
 
-#region MONO_CALLBACK
-        void OnEnable ( ) {
-            Player.PlayerControl.GamePlay.Attack.started += OnAttackStarted;
-            Player.PlayerControl.GamePlay.Attack.performed += OnAttackPerformed;
-            Player.PlayerControl.GamePlay.Attack.canceled += OnAttackCanceled;
-        }
-
-        void OnDisable ( ) {
-            Player.PlayerControl.GamePlay.Attack.started -= OnAttackStarted;
-            Player.PlayerControl.GamePlay.Attack.performed -= OnAttackPerformed;
-            Player.PlayerControl.GamePlay.Attack.canceled -= OnAttackCanceled;
-        }
-#endregion
-
 #region DEBUG
 #if UNITY_EDITOR
         void OnDrawGizmos ( ) {
@@ -228,16 +192,20 @@ namespace CJStudio.SSP.Player {
 
         //Info for an atack action
         class AttackInfo {
-            public AttackInfo (string boneName, float radius, float damage, float knockBackDis) {
-                this.boneName = boneName;
-                this.radius = radius;
-                this.damage = damage;
-                this.knockBackDis = knockBackDis;
+            public AttackInfo (string boneName, float radius, float damage, float knockBackDis, float knockBackDur, EKnockBackDirection direction) {
+                this.BoneName = boneName;
+                this.Radius = radius;
+                this.Damage = damage;
+                this.KnockBackDis = knockBackDis;
+                this.KnockBackDur = knockBackDur;
+                this.Direction = direction;
             }
-            public string boneName = "";
-            public float radius = 0f;
-            public float damage = 0f;
-            public float knockBackDis = 0f;
+            public string BoneName { get; set; }
+            public float Radius { get; set; }
+            public float Damage { get; set; }
+            public float KnockBackDis { get; set; }
+            public float KnockBackDur { get; set; }
+            public EKnockBackDirection Direction { get; set; }
         }
 
         //Enum for Attack Type
@@ -247,6 +215,14 @@ namespace CJStudio.SSP.Player {
             public int Special;
             public int Ultilimate;
         }
+
+    }
+
+    enum EKnockBackDirection {
+        BACKWARD,
+        UP,
+        OBLIQUE,
+
     }
 
 }

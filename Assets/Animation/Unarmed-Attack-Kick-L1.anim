@@ -53070,7 +53070,7 @@ AnimationClip:
     messageOptions: 0
   - time: 0.5
     functionName: OnLastHit
-    data: Leg_Left_TOE2\\0.3\\20\\3.0
+    data: Leg_Left_TOE2\\0.3\\20\\2.0\\0.4\\2
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

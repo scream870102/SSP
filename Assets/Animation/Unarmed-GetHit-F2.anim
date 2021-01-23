@@ -30274,7 +30274,14 @@ AnimationClip:
   m_HasMotionFloatCurves: 1
   m_Events:
   - time: 0
-    functionName: OnHurt
+    functionName: OnHurtStart
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.5
+    functionName: OnHurtEnd
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

@@ -38130,7 +38130,7 @@ AnimationClip:
     messageOptions: 0
   - time: 0.33333334
     functionName: OnHit
-    data: Bip001_R_Finger01_end\\0.1\\10\\0.2
+    data: Bip001_R_Finger01_end\\0.1\\10\\0.5\\0.1\\0
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

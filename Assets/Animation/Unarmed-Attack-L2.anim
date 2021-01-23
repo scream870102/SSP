@@ -38058,21 +38058,21 @@ AnimationClip:
     messageOptions: 0
   - time: 0.26666668
     functionName: OnLastHit
-    data: Bip001_L_Finger01_end\\0.1\\10\\2.0
+    data: Bip001_L_Finger01_end\\0.1\\10\\2.0\\0.1\\2
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.3
     functionName: OnLastHit
-    data: Bip001_L_Finger01_end\\0.1\\10\\2.0
+    data: Bip001_L_Finger01_end\\0.1\\10\\2.0\\0.1\\2
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.33333334
     functionName: OnLastHit
-    data: Bip001_L_Finger01_end\\0.1\\10\\2.0
+    data: Bip001_L_Finger01_end\\0.1\\10\\2.0\\0.1\\2
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

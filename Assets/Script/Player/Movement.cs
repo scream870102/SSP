@@ -5,90 +5,151 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 namespace CJStudio.SSP.Player {
     class Movement : MonoBehaviour {
-        [SerializeField] MoveAttr attr = null;
-        MoveProps props = null;
+        [SerializeField] MovementAttr attr = null;
         [SerializeField] GameObject guardObj = null;
+        ScaledTimer jumpTimer = null;
         CharacterController controller = null;
         Animator anim = null;
-        float moveHori = 0f;
+        GuardProps guardProps = null;
+        float horiVel = 0f;
         float vertiVel = 0f;
-        ScaledTimer jumpTimer = null;
         public Player Player { get; set; }
-
-        [ReadOnly][SerializeField] bool bJumping = false;
+        public bool IsJumping { get; private set; }
         public bool IsGrounded { get; private set; }
         public bool IsGuard { get; private set; }
+        public bool IsStunned { get; private set; }
+        public bool IsHurting { get; private set; }
 #if UNITY_EDITOR
+        [Header ("OBSERVE")]
         [ReadOnly][SerializeField] bool bGround = false;
         [ReadOnly][SerializeField] bool bGuard = false;
+        [ReadOnly][SerializeField] bool bStunned = false;
         [ReadOnly][SerializeField] bool bHurting = false;
+        [ReadOnly][SerializeField] bool bJumping = false;
 #endif
+        public bool MinusGuardEnergy (float value) {
+            this.guardProps.GuardEnergy -= value;
+            if (this.guardProps.GuardEnergy <= 0f) {
+                anim.SetTrigger ("Stunned");
+                IsStunned = true;
+                CancelGuard ( );
+            }
+            return this.guardProps.GuardEnergy <= 0f;
+        }
+
+#region MONO_MESSAGE
+        void OnDestroy ( ) {
+            Player.HurtStart -= OnHurtStart;
+            Player.HurtEnd -= OnHurtEnd;
+        }
+
         void Awake ( ) {
             controller = GetComponent<CharacterController> ( );
             anim = GetComponent<Animator> ( );
             jumpTimer = new ScaledTimer (attr.JumpIgnoreGroundTime);
-            props = new MoveProps (attr.GuardInitEnergy);
+            guardProps = new GuardProps (attr.GuardInitEnergy);
             Player.HurtStart += OnHurtStart;
             Player.HurtEnd += OnHurtEnd;
         }
 
         void Update ( ) {
-            RaycastHit result;
-            IsGrounded = HitGround (attr.DistanceForDetectGround, out result);
-            anim.SetBool ("Ground", IsGrounded);
+            DetectGround ( );
 #if UNITY_EDITOR
             bGround = IsGrounded;
             bGuard = IsGuard;
-            //if (result.collider != null)
-            //Debug.Log (result.collider.name);
+            bStunned = IsStunned;
+            bHurting = IsHurting;
+            bJumping = IsJumping;
 #endif
-            GetInput ( );
+            Action ( );
         }
+#endregion
 
-        void GetInput ( ) {
+        void Action ( ) {
 #region GRAVITY
             //if is not above the ground add gravity
-            if (!IsGrounded && !bJumping)
+            if (!IsGrounded && !IsJumping && !Player.IsTransition) {
                 controller.Move (Vector3.down * Time.deltaTime * attr.Gravity);
+            }
 #endregion
-            if (Player.IsAttacking) {
+
+            if (Player.IsAttacking || IsStunned || IsHurting) {
                 //if player is attacking force stop guard action
-                if (IsGuard) {
-                    IsGuard = false;
-                    guardObj.SetActive (false);
-                    anim.SetBool ("Guard", false);
-                }
+                if (IsGuard)
+                    CancelGuard ( );
                 return;
             }
 #region JUMP
-            if (bJumping) {
+            if (IsJumping) {
                 controller.Move (Vector3.up * Time.deltaTime * vertiVel);
                 if (vertiVel > 0f)
                     vertiVel -= attr.JumpGravity;
                 else
                     vertiVel -= attr.JumpFallGravity;
                 if (IsGrounded && jumpTimer.IsFinished)
-                    bJumping = false;
+                    IsJumping = false;
             }
 #endregion
+
 #region GUARD
-            if (!IsGuard) props.GuardEnergy += attr.GuardRecoverRate * Time.deltaTime;
-            if (props.GuardEnergy > attr.GuardInitEnergy) props.GuardEnergy = attr.GuardInitEnergy;
+            if (!IsGuard) guardProps.GuardEnergy += attr.GuardRecoverRate * Time.deltaTime;
 #endregion
+
 #region MOVE
-            anim.SetFloat ("Speed", Mathf.Abs (moveHori));
-            if (moveHori != 0f) {
-                transform.rotation = Quaternion.Euler (0f, moveHori > 0f?90f: -90f, 0f);
+            anim.SetFloat ("Speed", Mathf.Abs (horiVel));
+            if (horiVel != 0f) {
+                transform.rotation = Quaternion.Euler (0f, horiVel > 0f?90f: -90f, 0f);
                 if (!IsGuard)
-                    controller.Move (Vector3.right * moveHori * (IsGrounded?attr.Velocity : attr.AirVelocity) * Time.deltaTime);
+                    controller.Move (Vector3.right * horiVel * (IsGrounded?attr.Velocity : attr.AirVelocity) * Time.deltaTime);
             }
 #endregion
 
         }
+
+        bool HitGround (float distance, out RaycastHit result) {
+            Debug.DrawLine (transform.position, transform.position + Vector3.down * distance, UnityEngine.Color.red, Time.deltaTime);
+            return Physics.Raycast (transform.position, Vector3.down, out result, distance);
+        }
+
+        void CancelGuard ( ) {
+            IsGuard = false;
+            guardObj.SetActive (false);
+            anim.SetBool ("Guard", false);
+        }
+
+        void DetectGround ( ) {
+            RaycastHit result;
+            IsGrounded = HitGround (attr.DistanceForDetectGround, out result);
+            anim.SetBool ("Ground", IsGrounded);
+        }
+
+#region CALLBACK
+        void OnHurtStart ( ) {
+            CancelGuard ( );
+            IsStunned = false;
+            IsHurting = true;
+        }
+
+        void OnHurtEnd ( ) {
+            IsHurting = false;
+            IsStunned = false;
+        }
+
+        void OnStunnedEnd ( ) {
+            IsStunned = false;
+            IsHurting = false;
+        }
+
+        void OnGuardActive ( ) {
+            guardObj.SetActive (true);
+        }
+
+#endregion
+
 #region BUTTON_CALLBACK
         void OnJumpStarted (InputAction.CallbackContext ctx) {
-            if (!bJumping && IsGrounded && !IsGuard) {
-                bJumping = true;
+            if (!IsJumping && IsGrounded && !IsGuard && !IsStunned && !IsHurting) {
+                IsJumping = true;
                 vertiVel = attr.JumpVelocity;
                 jumpTimer.Reset ( );
                 anim.SetTrigger ("Jump");
@@ -96,26 +157,22 @@ namespace CJStudio.SSP.Player {
         }
 
         void OnGuardStarted (InputAction.CallbackContext ctx) {
-            if (bJumping || bHurting) return;
+            if (IsJumping || IsHurting || IsStunned) return;
             IsGuard = true;
-            guardObj.SetActive (true);
             anim.SetBool ("Guard", true);
         }
 
         void OnGuardCanceled (InputAction.CallbackContext ctx) {
-            IsGuard = false;
-            guardObj.SetActive (false);
-            anim.SetBool ("Guard", false);
+            CancelGuard ( );
         }
 
         void OnMoveHoriPerformed (InputAction.CallbackContext ctx) {
-            moveHori = ctx.ReadValue<float> ( );
+            horiVel = ctx.ReadValue<float> ( );
         }
 
         void OnMoveHoriCanceled (InputAction.CallbackContext ctx) {
-            moveHori = ctx.ReadValue<float> ( );
+            horiVel = ctx.ReadValue<float> ( );
         }
-#endregion
 
         void OnEnable ( ) {
             Player.PlayerControl.GamePlay.MoveHori.performed += OnMoveHoriPerformed;
@@ -133,25 +190,10 @@ namespace CJStudio.SSP.Player {
             Player.PlayerControl.GamePlay.Guard.canceled -= OnGuardCanceled;
         }
 
-        bool HitGround (float distance, out RaycastHit result) {
-            Debug.DrawLine (transform.position, transform.position + Vector3.down * distance, UnityEngine.Color.red, Time.deltaTime);
-            return Physics.Raycast (transform.position, Vector3.down, out result, distance);
-        }
-        public float MinusGuardEnergy (float value) {
-            this.props.GuardEnergy -= value;
-            return props.GuardEnergy;
-        }
-
-        void OnHurtStart ( ) {
-            bHurting = true;
-        }
-
-        void OnHurtEnd ( ) {
-            bHurting = false;
-        }
+#endregion
 
         [System.Serializable]
-        class MoveAttr {
+        class MovementAttr {
             public float Velocity = 10f;
             public float AirVelocity = 5f;
             public float AllowPlayerRotation = .1f;
@@ -168,8 +210,8 @@ namespace CJStudio.SSP.Player {
         }
 
         [System.Serializable]
-        public class MoveProps {
-            public MoveProps (float initGuardEnergy) {
+        public class GuardProps {
+            public GuardProps (float initGuardEnergy) {
                 this.guardEnergy = initGuardEnergy;
                 this.initGuardEnergy = initGuardEnergy;
             }
