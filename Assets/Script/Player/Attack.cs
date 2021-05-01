@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.InputSystem;
-namespace CJStudio.SSP.Player {
+namespace CJStudio.SSP.Player
+{
     // HA = Hit area -- 在這個範圍內可以插入多個攻擊點 但只會計算一次傷害
     // CC = Combo Continue -- 在這個時間點內可以持續接受玩家的輸入 來延續技能
     // AA = Approach Area -- 在這個範圍內 透過Tween將玩家拉近與目標的距離
     // S=Start
     // E=End
     // 詳情參考Player.md
-    class Attack : MonoBehaviour {
+    class Attack : MonoBehaviour
+    {
         [SerializeField] ComboInfo comboInfo = null;
-        Dictionary<string, Transform> bones = new Dictionary<string, Transform> ( );
+        Dictionary<string, Transform> bones = new Dictionary<string, Transform>();
         Animator anim = null;
         public Player Player { get; set; }
         public Player TargetPlayer { get; set; }
@@ -21,178 +23,224 @@ namespace CJStudio.SSP.Player {
         bool bDetect = false;
         bool bHit = false;
         bool bAttackPressed = false;
-#region DEBUG
+        bool bStrongAttackPressed = false;
+        #region DEBUG
 #if UNITY_EDITOR
         Vector3 pos = Vector3.zero;
         float radius = 0f;
         bool bDraw = false;
 #endif
-#endregion
+        #endregion
 
-#region MONO_MESSAGE
-        void Awake ( ) {
-            anim = GetComponent<Animator> ( );
-            Transform[ ] obj = GetComponentsInChildren<Transform> ( );
-            foreach (Transform o in obj) {
-                if (!bones.ContainsKey (o.name))
-                    bones.Add (o.name, o);
+        #region MONO_MESSAGE
+        void Awake()
+        {
+            anim = GetComponent<Animator>();
+            Transform[] obj = GetComponentsInChildren<Transform>();
+            foreach (Transform o in obj)
+            {
+                if (!bones.ContainsKey(o.name))
+                    bones.Add(o.name, o);
             }
             Player.HurtStart += OnHurtStarted;
         }
 
-        void Start ( ) {
+        void Start()
+        {
             IsAttacking = false;
         }
 
-        void Update ( ) {
-            if (bAttackPressed) {
-                anim.SetInteger ("Combo", comboInfo.Normal);
-            }
-            DetectBtn4ComboExtend ( );
+        void Update()
+        {
+            if (bAttackPressed && !bStrongAttackPressed)
+                anim.SetInteger("Combo", comboInfo.Normal);
+            if (bStrongAttackPressed && !bAttackPressed)
+                anim.SetInteger("Combo", comboInfo.Special);
+            DetectBtn4ComboExtend();
         }
 
-        void OnDestroy ( ) {
+        void OnDestroy()
+        {
             Player.HurtStart -= OnHurtStarted;
         }
-#endregion
+        #endregion
 
-        void DetectBtn4ComboExtend ( ) {
-            if (bDetect) {
-                if (bAttackPressed) {
+        void DetectBtn4ComboExtend()
+        {
+            if (bDetect)
+            {
+                if (bAttackPressed || bStrongAttackPressed)
+                {
                     bContinue = true;
-                    anim.SetBool ("Continue", bContinue);
+                    anim.SetBool("Continue", bContinue);
                 }
             }
         }
 
-        void CheckIfHitTarget (string hitInfo, bool bLastHit = false) {
+        void CheckIfHitTarget(string hitInfo, bool bLastHit = false)
+        {
             string pattern = @"(\w+)\\+(\d+\.?\d+)\\+(\d+\.?\d+)\\+(\d+\.?\d+)\\+(\d+\.?\d+)\\+(\d+)";
-            MatchCollection matches = Regex.Matches (hitInfo, pattern);
-            AttackInfo info = new AttackInfo (
+            MatchCollection matches = Regex.Matches(hitInfo, pattern);
+            AttackInfo info = new AttackInfo(
                 matches[0].Groups[1].Value,
-                float.Parse (matches[0].Groups[2].Value),
-                float.Parse (matches[0].Groups[3].Value),
-                float.Parse (matches[0].Groups[4].Value),
-                float.Parse (matches[0].Groups[5].Value),
-                (EKnockBackDirection) (int.Parse (matches[0].Groups[6].Value))
+                float.Parse(matches[0].Groups[2].Value),
+                float.Parse(matches[0].Groups[3].Value),
+                float.Parse(matches[0].Groups[4].Value),
+                float.Parse(matches[0].Groups[5].Value),
+                (EKnockBackDirection)(int.Parse(matches[0].Groups[6].Value))
             );
 #if UNITY_EDITOR
             bDraw = true;
             pos = bones[info.BoneName].position;
             radius = info.Radius;
 #endif
-            Collider[ ] cols = Physics.OverlapSphere (bones[info.BoneName].position, info.Radius);
-            if (cols.Length != 0) {
-                foreach (Collider c in cols) {
-                    if (c.name != this.name && c.tag == "Player") {
-                        if (TargetPlayer) {
+            Collider[] cols = Physics.OverlapSphere(bones[info.BoneName].position, info.Radius);
+            if (cols.Length != 0)
+            {
+                foreach (Collider c in cols)
+                {
+                    if (c.name != this.name && c.tag == "Player")
+                    {
+                        if (TargetPlayer)
+                        {
                             bHit = true;
-                            TargetPlayer.TakeDamage (info.Damage, bLastHit, info.KnockBackDis, info.KnockBackDur, info.Direction);
+                            TargetPlayer.TakeDamage(info.Damage, bLastHit, info.KnockBackDis, info.KnockBackDur, info.Direction);
                         }
                     }
                 }
             }
         }
 
-#region BUTTON_CAllBACK
-        void OnAttackStarted (InputAction.CallbackContext ctx) {
+        #region BUTTON_CAllBACK
+        void OnAttackStarted(InputAction.CallbackContext ctx)
+        {
             bAttackPressed = true;
         }
 
-        void OnAttackPerformed (InputAction.CallbackContext ctx) {
+        void OnAttackPerformed(InputAction.CallbackContext ctx)
+        {
             bAttackPressed = true;
         }
 
-        void OnAttackCanceled (InputAction.CallbackContext ctx) {
+        void OnAttackCanceled(InputAction.CallbackContext ctx)
+        {
             bAttackPressed = false;
         }
 
-        void OnEnable ( ) {
+        void OnStrongAttackStarted(InputAction.CallbackContext ctx) => bStrongAttackPressed = true;
+
+        void OnStrongAttackPerformed(InputAction.CallbackContext ctx) => bStrongAttackPressed = true;
+
+        void OnStrongAttackCanceled(InputAction.CallbackContext ctx) => bStrongAttackPressed = false;
+
+        void OnEnable()
+        {
             Player.PlayerControl.GamePlay.Attack.started += OnAttackStarted;
             Player.PlayerControl.GamePlay.Attack.performed += OnAttackPerformed;
             Player.PlayerControl.GamePlay.Attack.canceled += OnAttackCanceled;
+            Player.PlayerControl.GamePlay.StrongAttack.started += OnStrongAttackStarted;
+            Player.PlayerControl.GamePlay.StrongAttack.performed += OnStrongAttackPerformed;
+            Player.PlayerControl.GamePlay.StrongAttack.canceled += OnStrongAttackCanceled;
         }
 
-        void OnDisable ( ) {
+        void OnDisable()
+        {
             Player.PlayerControl.GamePlay.Attack.started -= OnAttackStarted;
             Player.PlayerControl.GamePlay.Attack.performed -= OnAttackPerformed;
             Player.PlayerControl.GamePlay.Attack.canceled -= OnAttackCanceled;
+            Player.PlayerControl.GamePlay.StrongAttack.started -= OnStrongAttackStarted;
+            Player.PlayerControl.GamePlay.StrongAttack.performed -= OnStrongAttackPerformed;
+            Player.PlayerControl.GamePlay.StrongAttack.canceled -= OnStrongAttackCanceled;
         }
-#endregion
+        #endregion
 
-#region ANIMATION_EVENT_CALLBACK
+        #region ANIMATION_EVENT_CALLBACK
 
         //Call this method to stop accept player input for extend combo
-        void OnHurtStarted ( ) {
+        void OnHurtStarted()
+        {
             //bApproaching = false;
             bDetect = false;
         }
 
         //Call this method to start detection for extend combo
-        void OnComboContinueS ( ) {
+        void OnComboContinueS()
+        {
             bContinue = false;
-            anim.SetBool ("Continue", bContinue);
+            anim.SetBool("Continue", bContinue);
             bDetect = true;
         }
 
         //Call this methdo to end detection for extend combo
-        void OnComboContinueE ( ) {
+        void OnComboContinueE()
+        {
             bDetect = false;
-            if (!bContinue) {
-                OnEndCombo ( );
+            if (!bContinue)
+            {
+                OnEndCombo();
             }
         }
 
         //Call this method to start attack detection
-        void OnHitAreaS ( ) {
+        void OnHitAreaS()
+        {
             bHit = false;
             IsAttacking = true;
         }
 
         //Call this method to end attack detection
-        void OnHitAreaE ( ) {
+        void OnHitAreaE()
+        {
             bHit = false;
             IsAttacking = false;
         }
 
         //Call for Normal Attack
-        void OnHit (string hitInfo) {
-            if (bHit) {
+        void OnHit(string hitInfo)
+        {
+            if (bHit)
+            {
                 //Debug.Log ("已經打過了 還想打啊!!");
                 return;
             }
-            CheckIfHitTarget (hitInfo);
+            CheckIfHitTarget(hitInfo);
         }
 
         //Call for Attack which is end of combo
-        void OnLastHit (string hitInfo) {
-            if (bHit) {
+        void OnLastHit(string hitInfo)
+        {
+            if (bHit)
+            {
                 //Debug.Log ("已經打過了 還想打啊!!");
                 return;
             }
-            CheckIfHitTarget (hitInfo, true);
+            CheckIfHitTarget(hitInfo, true);
         }
 
         //Call for Combo End then next attack btn press will be recognize as new combo
-        void OnEndCombo ( ) {
-            anim.SetInteger ("Combo", 0);
+        void OnEndCombo()
+        {
+            anim.SetInteger("Combo", 0);
         }
 
-#endregion
+        #endregion
 
-#region DEBUG
+        #region DEBUG
 #if UNITY_EDITOR
-        void OnDrawGizmos ( ) {
+        void OnDrawGizmos()
+        {
             Gizmos.color = Color.red;
             if (bDraw)
-                Gizmos.DrawSphere (pos, radius);
+                Gizmos.DrawSphere(pos, radius);
         }
-#endif   
-#endregion
+#endif
+        #endregion
 
         //Info for an atack action
-        class AttackInfo {
-            public AttackInfo (string boneName, float radius, float damage, float knockBackDis, float knockBackDur, EKnockBackDirection direction) {
+        class AttackInfo
+        {
+            public AttackInfo(string boneName, float radius, float damage, float knockBackDis, float knockBackDur, EKnockBackDirection direction)
+            {
                 this.BoneName = boneName;
                 this.Radius = radius;
                 this.Damage = damage;
@@ -210,7 +258,8 @@ namespace CJStudio.SSP.Player {
 
         //Enum for Attack Type
         [System.Serializable]
-        class ComboInfo {
+        class ComboInfo
+        {
             public int Normal;
             public int Special;
             public int Ultilimate;
@@ -218,7 +267,8 @@ namespace CJStudio.SSP.Player {
 
     }
 
-    enum EKnockBackDirection {
+    enum EKnockBackDirection
+    {
         BACKWARD,
         UP,
         OBLIQUE,

@@ -44,6 +44,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "StrongAttack",
+                    "type": "Button",
+                    "id": "24c15490-354d-4478-8d89-955f17c1405b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -203,6 +211,17 @@
                 },
                 {
                     "name": "",
+                    "id": "611388ec-2009-40b1-9594-7a0038f2fd13",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "13d0d1eb-0a82-42c2-8f12-03716740e209",
                     "path": "<Gamepad>/buttonEast",
                     "interactions": "",
@@ -215,11 +234,33 @@
                 {
                     "name": "",
                     "id": "a896159b-2091-43f8-adbf-28e2c8ce2c31",
-                    "path": "<Keyboard>/k",
+                    "path": "<Keyboard>/l",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Guard",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "400e7536-e9c5-48b7-b2e3-370be968d9d5",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "StrongAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "99ec9475-06f5-45ef-9ac6-2ea56e9f7091",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "StrongAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

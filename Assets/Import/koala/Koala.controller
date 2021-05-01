@@ -46,7 +46,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: d31fcb948494a0d49803fec4d6300309, type: 2}
+  m_Motion: {fileID: 7400000, guid: 4ba6868d51230814fa5f020cd24c498f, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -96,7 +96,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: e437ebbac0e1eef48a6e0ecfa0daebe2, type: 2}
+  m_Motion: {fileID: 7400000, guid: e7019bec925ab8a4ca67b73f8443ab92, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -148,7 +148,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 1389ef8a6b71cca49a85edc7cde9ef62, type: 2}
+  m_Motion: {fileID: 7400000, guid: 60dcf9b20fd6ada4b8910d4380f5ad9c, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -201,7 +201,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 66954716af4aede418d7685d00927246, type: 2}
+  m_Motion: {fileID: 7400000, guid: c80a9517cb29f054a941430917513244, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -279,7 +279,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 5f2e0facf69e3384f8034e7ef8d9b8a0, type: 2}
+  m_Motion: {fileID: 7400000, guid: 0c8bf0b688726e24ab3ff4528dde435f, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -628,7 +628,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Nilu
+  m_Name: Koala
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Speed

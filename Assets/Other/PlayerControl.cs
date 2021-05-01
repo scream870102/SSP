@@ -59,6 +59,14 @@ namespace CJStudio.SSP.InputSystem
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""StrongAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""24c15490-354d-4478-8d89-955f17c1405b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -218,6 +226,17 @@ namespace CJStudio.SSP.InputSystem
                 },
                 {
                     ""name"": """",
+                    ""id"": ""611388ec-2009-40b1-9594-7a0038f2fd13"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""13d0d1eb-0a82-42c2-8f12-03716740e209"",
                     ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
@@ -230,11 +249,33 @@ namespace CJStudio.SSP.InputSystem
                 {
                     ""name"": """",
                     ""id"": ""a896159b-2091-43f8-adbf-28e2c8ce2c31"",
-                    ""path"": ""<Keyboard>/k"",
+                    ""path"": ""<Keyboard>/l"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Guard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""400e7536-e9c5-48b7-b2e3-370be968d9d5"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""StrongAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""99ec9475-06f5-45ef-9ac6-2ea56e9f7091"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""StrongAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -250,6 +291,7 @@ namespace CJStudio.SSP.InputSystem
             m_GamePlay_MoveHori = m_GamePlay.FindAction("MoveHori", throwIfNotFound: true);
             m_GamePlay_Jump = m_GamePlay.FindAction("Jump", throwIfNotFound: true);
             m_GamePlay_Guard = m_GamePlay.FindAction("Guard", throwIfNotFound: true);
+            m_GamePlay_StrongAttack = m_GamePlay.FindAction("StrongAttack", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -304,6 +346,7 @@ namespace CJStudio.SSP.InputSystem
         private readonly InputAction m_GamePlay_MoveHori;
         private readonly InputAction m_GamePlay_Jump;
         private readonly InputAction m_GamePlay_Guard;
+        private readonly InputAction m_GamePlay_StrongAttack;
         public struct GamePlayActions
         {
             private @PlayerControl m_Wrapper;
@@ -313,6 +356,7 @@ namespace CJStudio.SSP.InputSystem
             public InputAction @MoveHori => m_Wrapper.m_GamePlay_MoveHori;
             public InputAction @Jump => m_Wrapper.m_GamePlay_Jump;
             public InputAction @Guard => m_Wrapper.m_GamePlay_Guard;
+            public InputAction @StrongAttack => m_Wrapper.m_GamePlay_StrongAttack;
             public InputActionMap Get() { return m_Wrapper.m_GamePlay; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -337,6 +381,9 @@ namespace CJStudio.SSP.InputSystem
                     @Guard.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnGuard;
                     @Guard.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnGuard;
                     @Guard.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnGuard;
+                    @StrongAttack.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnStrongAttack;
+                    @StrongAttack.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnStrongAttack;
+                    @StrongAttack.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnStrongAttack;
                 }
                 m_Wrapper.m_GamePlayActionsCallbackInterface = instance;
                 if (instance != null)
@@ -356,6 +403,9 @@ namespace CJStudio.SSP.InputSystem
                     @Guard.started += instance.OnGuard;
                     @Guard.performed += instance.OnGuard;
                     @Guard.canceled += instance.OnGuard;
+                    @StrongAttack.started += instance.OnStrongAttack;
+                    @StrongAttack.performed += instance.OnStrongAttack;
+                    @StrongAttack.canceled += instance.OnStrongAttack;
                 }
             }
         }
@@ -367,6 +417,7 @@ namespace CJStudio.SSP.InputSystem
             void OnMoveHori(InputAction.CallbackContext context);
             void OnJump(InputAction.CallbackContext context);
             void OnGuard(InputAction.CallbackContext context);
+            void OnStrongAttack(InputAction.CallbackContext context);
         }
     }
 }
