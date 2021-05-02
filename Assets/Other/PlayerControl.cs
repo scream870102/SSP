@@ -58,7 +58,7 @@ namespace CJStudio.SSP.InputSystem
                     ""id"": ""1e253949-372e-4fb3-a2b0-cf7ac0dd7732"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press(behavior=2)""
                 },
                 {
                     ""name"": ""StrongAttack"",

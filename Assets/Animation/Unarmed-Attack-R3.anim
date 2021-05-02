@@ -33288,7 +33288,7 @@ AnimationClip:
     messageOptions: 0
   - time: 0.33333334
     functionName: OnHit
-    data: Arm_Right_Hand_F_FORE_01\\0.1\\10\\0.2\\0.1\\2
+    data: MiddleFinger1_R\\0.1\\10\\0.2\\0.1\\2
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

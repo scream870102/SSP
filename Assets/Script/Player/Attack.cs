@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -79,7 +78,7 @@ namespace CJStudio.SSP.Player
 
         void CheckIfHitTarget(string hitInfo, bool bLastHit = false)
         {
-            string pattern = @"(\w+)\\+(\d+\.?\d+)\\+(\d+\.?\d+)\\+(\d+\.?\d+)\\+(\d+\.?\d+)\\+(\d+)";
+            string pattern = @"([\w\s]+)\\+(\d+\.?\d+)\\+(\d+\.?\d+)\\+(\d+\.?\d+)\\+(\d+\.?\d+)\\+(\d+)";
             MatchCollection matches = Regex.Matches(hitInfo, pattern);
             AttackInfo info = new AttackInfo(
                 matches[0].Groups[1].Value,
@@ -114,11 +113,15 @@ namespace CJStudio.SSP.Player
         #region BUTTON_CAllBACK
         void OnAttackStarted(InputAction.CallbackContext ctx)
         {
+            if (Player.IsJumping || Player.IsStunned)
+                return;
             bAttackPressed = true;
         }
 
         void OnAttackPerformed(InputAction.CallbackContext ctx)
         {
+            if (Player.IsJumping || Player.IsStunned)
+                return;
             bAttackPressed = true;
         }
 
